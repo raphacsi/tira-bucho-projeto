@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Protocolo Elite | Arrais & Linares</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080a11;
+            color: white;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        /* Modal Responsivo Fullscreen no Mobile */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 100;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .modal-content {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            padding: 1.5rem;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .input-tech {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            padding: 0.8rem;
+            outline: none;
+            transition: 0.3s;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .input-tech:focus {
+            border-color: #10b981;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 10px;
+        }
+
+        .diet-grid-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .modal {
+                padding: 20px;
+            }
+
+            .modal-content {
+                height: auto;
+                max-height: 90vh;
+                max-width: 1000px;
+                border-radius: 3rem;
+                padding: 2.5rem;
+            }
+
+            .diet-grid-layout {
+                display: grid;
+                grid-template-columns: 1fr 350px;
+                gap: 1.5rem;
+            }
+        }
+
+        /* Ajustes de toque para Mobile */
+        button,
+        select,
+        input {
+            min-height: 44px;
+        }
+
+        .input-tech {
+            font-size: 16px !important;
+        }
+
+        /* Evita zoom automático no iOS */
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-10 flex flex-col md:flex-row justify-between items-end border-b border-white/5 pb-8">
+            <div>
+                <h1 class="text-3xl font-black italic tracking-tighter uppercase">Protocolo <span
+                        class="text-emerald-500 text-4xl">Master</span></h1>
+                <p class="text-slate-500 text-[10px] font-bold tracking-[0.3em] uppercase">Arrais & Linares v3.0</p>
+            </div>
+            <nav class="flex gap-4 mt-6 md:mt-0">
+                <button onclick="tab('dietas')" id="t-dietas"
+                    class="text-emerald-500 font-black text-xs uppercase border-b-2 border-emerald-500 pb-2">Dieta</button>
+                <button onclick="tab('treinos')" id="t-treinos"
+                    class="text-slate-500 font-black text-xs uppercase border-b-2 border-transparent pb-2 hover:text-white transition">Treino</button>
+            </nav>
+        </header>
+
+        <div class="grid lg:grid-cols-12 gap-8">
+            <aside class="lg:col-span-4 space-y-6">
+                <section class="glass p-8 rounded-[2.5rem] shadow-2xl border-t-2 border-emerald-500">
+                    <h2 class="text-lg font-bold mb-6 italic">Parâmetros Clínicos</h2>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="number" id="w" placeholder="Peso (kg)" class="input-tech w-full">
+                            <input type="number" id="h" placeholder="Altura (cm)" class="input-tech w-full">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="number" id="a" placeholder="Idade" class="input-tech w-full">
+                            <select id="g" class="input-tech w-full">
+                                <option value="f">Feminino</option>
+                                <option value="m">Masculino</option>
+                            </select>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/5 space-y-4">
+                            <p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest italic">
+                                Intensidade de Atividade (METs)</p>
+                            <div>
+                                <label class="text-[9px] text-slate-400 uppercase">Musculação Semanal:</label>
+                                <div class="flex gap-2 mt-1">
+                                    <select id="met_musc" class="input-tech py-2 text-xs flex-1">
+                                        <option value="0">Não Pratico</option>
+                                        <option value="3.5">Leve</option>
+                                        <option value="5.5" selected>Normal</option>
+                                        <option value="7.5">Avançado</option>
+                                    </select>
+                                    <input type="number" id="time_musc" placeholder="Min"
+                                        class="input-tech py-2 text-xs w-16">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-slate-400 uppercase">Corrida Semanal:</label>
+                                <div class="flex gap-2 mt-1">
+                                    <select id="met_run" class="input-tech py-2 text-xs flex-1">
+                                        <option value="0">Não Pratico</option>
+                                        <option value="7.0">Leve (Trote)</option>
+                                        <option value="10.0">Normal</option>
+                                        <option value="12.5">Avançado</option>
+                                    </select>
+                                    <input type="number" id="time_run" placeholder="Min"
+                                        class="input-tech py-2 text-xs w-16">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="calculateEverything()"
+                            class="w-full accent-gradient py-5 rounded-2xl font-black uppercase tracking-widest hover:scale-[1.02] transition shadow-lg shadow-emerald-500/10">PROCESSAR
+                            PROTOCOLO</button>
+                    </div>
+                </section>
+            </aside>
+
+            <main class="lg:col-span-8 space-y-6">
+                <div id="resRow"
+                    class="hidden grid grid-cols-2 md:grid-cols-4 gap-3 animate-in slide-in-from-top-4 duration-500">
+                    <div class="glass p-4 rounded-2xl text-center"><span
+                            class="text-[9px] text-slate-500 block uppercase">IMC</span>
+                        <p id="resIMC" class="text-lg font-black italic">--</p>
+                    </div>
+                    <div class="glass p-4 rounded-2xl text-center"><span
+                            class="text-[9px] text-slate-500 block uppercase">Basal</span>
+                        <p id="resTMB" class="text-lg font-black italic">--</p>
+                    </div>
+                    <div class="glass p-4 rounded-2xl text-center border-b-2 border-emerald-500"><span
+                            class="text-[9px] text-emerald-500 block uppercase font-bold">GET Total</span>
+                        <p id="resGET" class="text-lg font-black italic">--</p>
+                    </div>
+                    <div class="glass p-4 rounded-2xl text-center"><span
+                            class="text-[9px] text-slate-500 block uppercase">Classif.</span>
+                        <p id="resStatus" class="text-[10px] font-bold uppercase text-emerald-400 mt-1">--</p>
+                    </div>
+                </div>
+
+                <div id="sec-dietas" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="glass p-10 rounded-[2.5rem] border border-white/5 col-span-full text-center opacity-40">
+                        Aguardando diagnóstico metabólico...</div>
+                </div>
+
+                <div id="sec-treinos" class="hidden space-y-6">
+                    <style>
+                        /* Estilo para garantir que a setinha apareça nos selects customizados */
+                        .select-wrapper {
+                            position: relative;
+                            width: 100%;
+                        }
+
+                        .select-wrapper::after {
+                            content: '▼';
+                            font-size: 10px;
+                            color: #10b981;
+                            position: absolute;
+                            right: 15px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            pointer-events: none;
+                        }
+
+                        .input-tech-select {
+                            appearance: none;
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            padding-right: 35px !important;
+                        }
+                    </style>
+
+                    <div class="glass p-6 md:p-10 rounded-[2.5rem] border border-white/5">
+                        <div class="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
+
+                            <div class="flex-1">
+                                <h3 class="font-black italic uppercase text-xl md:text-2xl tracking-tighter">Divisão de
+                                    Treino</h3>
+                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest leading-tight">
+                                    Personalize sua rotina de acordo com sua disponibilidade:
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+                                <div class="flex flex-col">
+                                    <span
+                                        class="text-[9px] uppercase text-emerald-500 font-black mb-1 ml-2 tracking-widest">Nível
+                                        Atual</span>
+                                    <div class="select-wrapper">
+                                        <select id="n_treino" onchange="atualizarOpcoesDivisao(); renderTreinoGrid();"
+                                            class="input-tech input-tech-select w-full lg:w-48 bg-slate-900/80">
+                                            <option value="iniciante">Iniciante</option>
+                                            <option value="intermediario" selected>Intermediário</option>
+                                            <option value="avancado">Avançado</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <span
+                                        class="text-[9px] uppercase text-emerald-500 font-black mb-1 ml-2 tracking-widest">Opções
+                                        de Treino</span>
+                                    <div class="select-wrapper">
+                                        <select id="f_treino" onchange="renderTreinoGrid()"
+                                            class="input-tech input-tech-select w-full lg:w-64 bg-slate-900/80">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="grid-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="modalDieta" class="modal">
+        <div class="glass max-w-6xl w-full rounded-[3rem] p-8 relative overflow-y-auto max-h-[90vh]">
+            <button onclick="closeModals()"
+                class="absolute top-8 right-8 text-slate-500 hover:text-white text-3xl">&times;</button>
+            <div class="mb-6">
+                <h2 id="mDietTitle" class="text-4xl font-black italic text-emerald-500 mb-2">0000 kcal</h2>
+                <p id="mDietDesc" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"></p>
+            </div>
+            <div class="diet-grid-layout">
+                <div id="mDietContent" class="grid grid-cols-1 gap-4"></div>
+                <div id="quickSwap" class="hidden flex flex-col gap-4">
+                    <div class="glass p-6 rounded-3xl border border-emerald-500/30 bg-emerald-500/5 sticky top-0">
+                        <p id="swapTitle"
+                            class="text-[10px] font-black text-emerald-400 uppercase mb-4 tracking-tighter">🔄 Opções de
+                            Substituição</p>
+                        <ul id="swapList" class="text-xs italic text-slate-300 space-y-3 leading-relaxed"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalTreino" class="modal">
+        <div class="glass max-w-xl w-full rounded-[3rem] p-8 relative overflow-y-auto max-h-[90vh]">
+            <button onclick="closeModals()"
+                class="absolute top-8 right-8 text-slate-500 hover:text-white text-3xl">&times;</button>
+            <h2 id="mT-Title" class="text-3xl font-black italic text-emerald-500 mb-6 uppercase">FICHA</h2>
+            <div id="mT-Content" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <div id="modalPatologia" class="modal">
+        <div class="glass max-w-md w-full rounded-[2.5rem] p-8 relative shadow-2xl border border-red-500/30">
+            <button onclick="document.getElementById('modalPatologia').classList.remove('active')"
+                class="absolute top-6 right-6 text-slate-500 text-2xl">&times;</button>
+            <h3 class="text-xl font-black text-red-400 italic mb-4 flex items-center gap-2">⚠️ Adaptação Clínica</h3>
+            <div id="patologiaContent" class="space-y-4"></div>
+            <button onclick="document.getElementById('modalPatologia').classList.remove('active')"
+                class="w-full mt-6 bg-slate-800 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        // BANCO DE DADOS DE DIETAS DO WORD
+        const dietasCustomDB = {
+            1000: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Ovos mexidos (3 claras)", s: ["3 claras - Ovos mexidos/omelete/clara cozida", "40g - Peito de frango desfiado", "55g - Atum light", "15g - Whey", "42g - Lombo desfiado", "30g - Patinho moído sem gordura", "20g - Proteína de soja texturizada", "15g - Proteína de ervilha"] },
+                        { n: "Melão (270g)", s: ["121g - Maçã", "155g - Uva", "164g - Abacaxi", "249g - Melancia", "184g - Kiwi", "133g - Pêra", "177g - Ameixa", "134g - Manga", "194g - Mamão", "59g - Caqui", "297g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Iogurte natural desnatado (185ml)", s: ["225ml - Leite desnatado", "95ml - Iogurte zero açúcar e gordura"] },
+                        { n: "Aveia em flocos (15g)", s: ["12g - Granola sem açúcar"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Batata inglesa cozida (202g)", s: ["60g - Arroz branco cozido + 52g - feijão carioca cozido", "85g - Arroz branco cozido", "93g - Arroz integral", "85g - Macarrão cozido", "127g - Batata baroa cozida", "80g - Mandioca cozida", "87g - Inhame cozido", "131g - Batata doce cozida", "60g - Arroz branco cozido + 43g - lentilha cozida"] },
+                        { n: "Alface (5 folhas)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Tomate (80g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Rúcula (20g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Whey Protein (30g)", s: ["80g - Frango desfiado", "90g - Lombo desfiado", "100g - Atum light", "6 claras - Omelete", "45g - Proteína de ervilha", "30g - Proteína de soja texturizada"] },
+                        { n: "Abacaxi (100g)", s: ["164g - Melão", "75g - Maçã", "95g - Uva", "152g - Melancia", "112g - Kiwi", "81g - Pêra", "108g - Ameixa", "82g - Manga", "118g - Mamão", "36g - Caqui", "181g - Morango"] }
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Batata inglesa cozida (202g)", s: ["60g - Arroz branco cozido + 52g - feijão carioca cozido", "85g - Arroz branco cozido", "93g - Arroz integral", "85g - Macarrão cozido", "127g - Batata baroa cozida", "80g - Mandioca cozida", "87g - Inhame cozido", "131g - Batata doce cozida", "60g - Arroz branco cozido + 43g - lentilha cozida"] },
+                        { n: "Alface (5 folhas)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Tomate (80g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Rúcula (20g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                }],
+            1100: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Peito de frango desfiado (40g)", s: ["3 claras - Ovos mexidos/omelete/clara cozida", "40g - Peito de frango desfiado", "55g - Atum light", "15g - Whey", "42g - Lombo desfiado", "30g - Patinho moído sem gordura", "20g - Proteína de soja texturizada", "15g - Proteína de ervilha"] },
+                        { n: "Mamão (120g)", s: ["167g - Melão", "75g - Maçã", "96g - Uva", "102g - Abacaxi", "154g - Melancia", "114g - Kiwi", "82g - Pêra", "110g - Ameixa", "120g - Manga", "120g - Mamão", "36g - Caqui", "184g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Batata inglesa cozida (169g)", s: ["71g - Arroz branco cozido", "78g - Arroz integral", "71g - Macarrão cozido", "106g - Batata baroa cozida", "67g - Mandioca cozida", "73g - Inhame cozido", "109g - Batata doce cozida"] },
+                        { n: "Atum light (68g)", s: ["50g - Peito de frango grelhado", "57g - Peixe grelhado ou cozido (branco)", "52g - Lombo desfiado", "36g - Patinho moído sem gordura", "28g - Proteína de soja texturizada", "4 claras - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (100g)", s: ["71g - Arroz branco cozido + 59g - feijão carioca cozido", "100g - Arroz branco cozido", "109g - Arroz integral", "99g - Macarrão cozido", "148g - Batata baroa cozida", "93g - Mandioca cozida", "101g - Inhame cozido", "152g - Batata doce cozida", "71g - Arroz branco cozido + 49g - lentilha cozida"] },
+                        { n: "Cenoura (60g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Pepino cru (50g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Beterraba cozida (60g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Whey Protein (30g)", s: ["80g - Frango desfiado", "90g - Lombo desfiado", "100g - Atum light", "6 claras - Omelete", "45g - Proteína de ervilha", "30g - Proteína de soja texturizada"] },
+                        { n: "Leite desnatado (150ml)", s: ["77ml - Iogurte triple 0", "130ml - Iogurte natural desnatado"] }
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (100g)", s: ["71g - Arroz branco cozido + 59g - feijão carioca cozido", "100g - Arroz branco cozido", "109g - Arroz integral", "99g - Macarrão cozido", "148g - Batata baroa cozida", "93g - Mandioca cozida", "101g - Inhame cozido", "152g - Batata doce cozida", "71g - Arroz branco cozido + 49g - lentilha cozida"] },
+                        { n: "Cenoura (60g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Pepino cru (50g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Beterraba cozida (60g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                }],
+            1200: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Atum light (60g) + Ricota light (30g)", s: ["4 claras - Ovos mexidos/omelete/clara cozida", "46g - Peito de frango desfiado", "60g - Atum light", "18g - Whey", "50g - Lombo desfiado", "32g - Patinho moído sem gordura", "25g - Proteína de soja texturizada", "18g - Proteína de ervilha"] },
+                        { n: "Abacaxi (160g)", s: ["263g - Melão", "118g - Maçã", "151g - Uva", "160g - Abacaxi", "243g - Melancia", "179g - Kiwi", "129g - Pêra", "173g - Ameixa", "131g - Manga", "189g - Mamão", "58g - Caqui", "289g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango desfiado", "100g - Atum light", "30g - Whey", "90g - Lombo desfiado", "6 claras - Omelete", "30g - Proteína de soja texturizada", "45g - Proteína de ervilha"] },
+                        { n: "Aveia em flocos (20g)", s: ["18g - Granola sem açúcar"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (80g)", s: ["71g - Arroz branco cozido + 59g - feijão carioca cozido", "100g - Arroz branco cozido", "109g - Arroz integral", "99g - Macarrão cozido", "148g - Batata baroa cozida", "93g - Mandioca cozida", "101g - Inhame cozido", "152g - Batata doce cozida", "71g - Arroz branco cozido + 49g - lentilha cozida"] },
+                        { n: "Feijão carioca cozido (80g)" },
+                        { n: "Brócolis cozido (60g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Couve-flor cozida (60g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Chu-chu cozido (70g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Ovos mexidos (3 claras)", s: ["40g - Frango desfiado", "42g - Lombo desfiado", "55g - Atum light", "15g - Whey", "15g - Proteína de ervilha", "30g - Patinho moído sem gordura", "30g - Proteína de soja texturizada"] },
+                        { n: "Melancia (121g)", s: ["130g - Melão", "59g - Maçã", "75g - Uva", "80g - Abacaxi", "121g - Melancia", "89g - Kiwi", "64g - Pêra", "86g - Ameixa", "65g - Manga", "94g - Mamão", "29g - Caqui", "144g - Morango"] }
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (100g)", s: ["71g - Arroz branco cozido + 59g - feijão carioca cozido", "100g - Arroz branco cozido", "109g - Arroz integral", "99g - Macarrão cozido", "148g - Batata baroa cozida", "93g - Mandioca cozida", "101g - Inhame cozido", "152g - Batata doce cozida", "71g - Arroz branco cozido + 49g - lentilha cozida"] },
+                        { n: "Feijão carioca cozido (80g)" },
+                        { n: "Brócolis cozido (60g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Couve-flor cozida (60g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Chu-chu cozido (70g)", s: ["5 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                }],
+            1300: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Ovos mexidos (4 claras)", s: ["4 claras - Ovos mexidos/omelete/clara cozida", "46g - Peito de frango desfiado", "60g - Atum light", "18g - Whey", "50g - Lombo desfiado", "32g - Patinho moído sem gordura", "25g - Proteína de soja texturizada", "18g - Proteína de ervilha"] },
+                        { n: "Maçã (177g)", s: ["392g - Melão", "177g - Maçã", "226g - Uva", "239g - Abacaxi", "363g - Melancia", "267g - Kiwi", "193g - Pêra", "258g - Ameixa", "196g - Manga", "283g - Mamão", "86g - Caqui", "432g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Abóbora cabotian cozida (240g)", s: ["92g - Arroz branco cozido", "100g - Arroz integral", "91g - Macarrão cozido", "137g - Batata baroa cozida", "86g - Mandioca cozida", "94g - Inhame cozido", "141g - Batata doce cozida"] },
+                        { n: "Patinho moído sem gordura (70g)", s: ["97g - Peito de frango desfiado", "113g - Peixe grelhado ou cozido (branco)", "6 claras + 1 gema - Ovos mexidos/cozidos", "106g - Lombo desfiado", "70g - Patinho moído sem gordura", "55g - Proteína de soja texturizada"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Batata doce cozida (141g)", s: ["71g - Arroz branco cozido + 45g - feijão carioca cozido", "92g - Arroz branco cozido", "100g - Arroz integral", "91g - Macarrão cozido", "137g - Batata baroa cozida", "86g - Mandioca cozida", "94g - Inhame cozido", "141g - Batata doce cozida", "71g - Arroz branco cozido + 37g - lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Cenoura (60g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Beringela (70g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Whey (30g)", s: ["80g - Frango desfiado", "90g - Lombo desfiado", "100g - Atum light", "6 claras - Omelete", "45g - Proteína de ervilha", "30g - Proteína de soja texturizada"] },
+                        { n: "Iogurte natural desnatado (185ml)", s: ["225ml - Leite desnatado", "95ml - Iogurte zero açúcar e gordura"] },
+                        { n: "Morango (100g)", s: ["90g - Melão", "41g - Maçã", "52g - Uva", "55g - Abacaxi", "84g - Melancia", "62g - Kiwi", "45g - Pêra", "60g - Ameixa", "45g - Manga", "65g - Mamão", "20g - Caqui", "100g - Morango"] }
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Batata doce cozida (141g)", s: ["71g - Arroz branco cozido + 45g - feijão carioca cozido", "92g - Arroz branco cozido", "100g - Arroz integral", "91g - Macarrão cozido", "137g - Batata baroa cozida", "86g - Mandioca cozida", "94g - Inhame cozido", "141g - Batata doce cozida", "71g - Arroz branco cozido + 37g - lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Cenoura (60g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Beringela (70g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                }],
+            1400: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Whey (30g)", s: ["6 claras - Omelete", "80g - Peito de frango desfiado", "100g - Atum light", "90g - Lombo desfiado", "30g - Proteína de soja texturizada", "45g - Proteína de ervilha"] },
+                        { n: "Leite desnatado (200ml)", s: ["160ml - Iogurte triple 0", "175ml - Iogurte natural desnatado"] },
+                        { n: "Mamão (120g)", s: ["167g - Melão", "75g - Maçã", "96g - Uva", "102g - Abacaxi", "154g - Melancia", "114g - Kiwi", "82g - Pêra", "110g - Ameixa", "83g - Manga", "120g - Mamão", "36g - Caqui", "184g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Iogurte natural desnatado (185g)", s: ["225ml - Leite desnatado", "95ml - Iogurte zero açúcar e gordura"] },
+                        { n: "Maçã (100g)", s: ["221g - Melão", "100g - Maçã", "128g - Uva", "135g - Abacaxi", "205g - Melancia", "151g - Kiwi", "109g - Pêra", "146g - Ameixa", "111g - Manga", "160g - Mamão", "48g - Caqui", "244g - Morango"] },
+                        { n: "Aveia em flocos (14g)", s: ["12g - Granola sem açúcar"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (85g)", s: ["85g - Arroz branco cozido + 50g - feijão carioca cozido", "109g - Arroz branco cozido", "119g - Arroz integral", "108g - Macarrão cozido", "162g - Batata baroa cozida", "102g - Mandioca cozida", "111g - Inhame cozido", "167g - Batata doce cozida", "85g - Arroz branco cozido + 40g - lentilha cozida"] },
+                        { n: "Feijão carioca cozido (50g)" },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Repolho (30g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Tomate (80g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Patinho moído sem gordura (85g)", s: ["118g - Peito de frango grelhado", "138g - Peixe grelhado ou cozido (branco)", "88g - Lombo desfiado", "85g - Patinho grelhado/moído sem gordura", "67g - Proteína de soja texturizada", "8 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Mandioca cozida (102g)", s: ["109g - Arroz branco cozido", "119g - Arroz integral", "108g - Macarrão cozido", "162g - Batata baroa cozida", "102g - Mandioca cozida", "111g - Inhame cozido", "167g - Batata doce cozida"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] },
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (85g) + Feijão carioca cozido (50g)", s: ["85g - Arroz branco cozido + 50g - feijão carioca cozido", "109g - Arroz branco cozido", "119g - Arroz integral", "108g - Macarrão cozido", "162g - Batata baroa cozida", "102g - Mandioca cozida", "111g - Inhame cozido", "167g - Batata doce cozida", "85g - Arroz branco cozido + 40g - lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Repolho (30g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Tomate (80g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                }],
+            1500: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Omelete / ovo mexido (1 ovo inteiro + 3 claras) + Atum enlatado light (60g)", s: ["8 claras + 1 gema - Ovos mexidos/cozidos", "119g - Peito de frango desfiado", "175g - Atum light", "130g - Lombo desfiado", "40g - Whey", "87g - Patinho moído sem gordura", "67g - Proteína de soja texturizada", "40g - Proteína de ervilha"] },
+                        { n: "Melão (170g)", s: ["170g - Melão", "76g - Maçã", "98g - Uva", "103g - Abacaxi", "157g - Melancia", "115g - Kiwi", "83g - Pêra", "111g - Ameixa", "84g - Manga", "122g - Mamão", "37g - Caqui", "187g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango desfiado", "100g - Atum light", "90g - Lombo desfiado", "6 claras - Omelete", "30g - Proteína de soja texturizada", "45g - Proteína de ervilha"] },
+                        { n: "Iogurte triple 0 (90ml)", s: ["120ml - Iogurte natural desnatado", "150ml - Leite desnatado"] },
+                        { n: "Melancia (100g)", s: ["108g - Melão", "49g - Maçã", "62g - Uva", "66g - Abacaxi", "100g - Melancia", "74g - Kiwi", "53g - Pêra", "71g - Ameixa", "54g - Manga", "78g - Mamão", "24g - Caqui", "119 - Morango"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (85g) + Feijão carioca cozido (60g)", s: ["85g - Arroz branco cozido + 60g - feijão carioca cozido", "114g - Arroz branco cozido", "124g - Arroz integral", "113g - Macarrão cozido", "169g - Batata baroa cozida", "106g - Mandioca cozida", "116g - Inhame cozido", "174g - Batata doce cozida", "85g - Arroz branco cozido + 50g - lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "30g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "40g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Pepino (60g)", s: ["4 folhas médias - Alface", "30g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "40g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Tomate (60g)", s: ["4 folhas médias - Alface", "30g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "40g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (140g)", s: ["140g - Peito de frango grelhado", "162g - Peixe grelhado ou cozido (branco)", "153g - Lombo desfiado", "100g - Patinho grelhado/moído sem gordura", "79g - Proteína de soja texturizada", "12 claras - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Batata inglesa cozida (150g)", s: ["63g - Arroz branco cozido", "68g - Arroz integral", "62g - Macarrão cozido", "93g - Batata baroa cozida", "59g - Mandioca cozida", "64g - Inhame cozido", "96g - Batata doce cozida"] },
+                        { n: "Patinho moído sem gordura (100g)", s: ["140g - Peito de frango grelhado", "162g - Peixe grelhado ou cozido (branco)", "153g - Lombo desfiado", "100g - Patinho grelhado/moído sem gordura", "79 - Proteína de soja texturizada", "12 claras - Ovos mexidos/cozidos"] },
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (85g) + Feijão carioca cozido (60g)", s: ["85g - Arroz branco cozido + 60g - feijão carioca cozido", "114g - Arroz branco cozido", "124g - Arroz integral", "113g - Macarrão cozido", "169g - Batata baroa cozida", "106g - Mandioca cozida", "116g - Inhame cozido", "174g - Batata doce cozida", "85g - Arroz branco cozido + 50g - lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Pepino (60g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Tomate (80g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "80g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (140g)", s: ["140g - Peito de frango grelhado", "162g - Peixe grelhado ou cozido (branco)", "153g - Lombo desfiado", "102g - Patinho grelhado/moído sem gordura", "79g - Proteína de soja texturizada", "12 claras - Ovos mexidos/cozidos"] }
+                    ]
+                }],
+            1600: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Omelete (4  claras + 1 gema) + Queijo minas frescal (10g)", s: ["4 claras + 1 gema - Ovos mexidos/omelete/clara cozida + 10g - queijo minas frescal", "59g - Peito de frango desfiado", "81g - Atum light", "70g - Lombo desfiado", "24g - Whey", "50g - Patinho moído sem gordura", "41g - Proteína de soja texturizada", "24g - Proteína de ervilha"] },
+                        { n: "Granola sem açúcar (20g)", s: ["22g - Aveia em flocos"] },
+                        { n: "Melão (120g)", s: ["120g - Melão", "55g - Maçã", "70g - Uva", "72g - Abacaxi", "110g - Melancia", "81g - Kiwi", "59g - Pêra", "79g - Ameixa", "60g - Manga", "87g - Mamão", "26g - Caqui", "132g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Abóbora cabotian cozida (200g)", s: ["77g - Arroz branco cozido", "83g - Arroz integral", "76g - Macarrão cozido", "114g - Batata baroa cozida", "72g - Mandioca cozida", "78g - Inhame cozido", "117g - Batata doce cozida"] },
+                        { n: "Atum enlatado light (68g)", s: ["50g - Peito de frango grelhado", "57g - Peixe grelhado ou cozido (branco)", "52g - Lombo desfiado", "36g - Patinho grelhado/moído sem gordura", "28g - Proteína de soja texturizada", "4 claras - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (90g) + Feijão carioca cozido (70g)", s: ["90g - Arroz branco cozido + 70g - Feijão carioca cozido", "124g - Arroz branco cozido", "135g - Arroz integral", "123g - Macarrão cozido", "184g - Batata baroa cozida", "116g - Mandioca cozida", "126g - Inhame cozido", "189g - Batata doce cozida", "90g - Arroz branco cozido + 60g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "45g - Rúcula", "45g - Pepino", "45g - Chuchu", "45g - Abobrinha", "20g - Vagem", "45g - Berinjela", "45g - Tomate", "45g - Repolho", "45g - Escarola", "45g - Couve", "45g - Couve-flor"] },
+                        { n: "Cenoura cozida (45g)", s: ["4 folhas médias - Alface", "45g - Rúcula", "45g - Pepino", "45g - Chuchu", "45g - Abobrinha", "20g - Vagem", "45g - Berinjela", "45g - Tomate", "45g - Repolho", "45g - Escarola", "45g - Couve", "45g - Couve-flor"] },
+                        { n: "Beterraba cozida (45g)", s: ["4 folhas médias - Alface", "45g - Rúcula", "45g - Pepino", "45g - Chuchu", "45g - Abobrinha", "20g - Vagem", "45g - Berinjela", "45g - Tomate", "45g - Repolho", "45g - Escarola", "45g - Couve", "45g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (140g)", s: ["140g - Peito de frango grelhado", "162g - Peixe grelhado ou cozido (branco)", "153g - Lombo desfiado", "100g - Patinho grelhado/moído sem gordura", "79g - Proteína de soja texturizada", "12 claras - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "90g - Lombo desfiado", "100g - Atum light", "30g - Proteína de soja texturizada", "6 claras - Ovos mexidos/cozidos", "45g - Proteína de ervilha"] },
+                        { n: "Iogurte triple 0 (135ml)", s: ["150ml - Iogurte natural desnatado", "220ml - Leite desnatado"] },
+                        { n: "Abacaxi (72g)", s: ["120g - Melão", "55g - Maçã", "70g - Uva", "72g - Abacaxi", "110g - Melancia", "81g - Kiwi", "59g - Pêra", "79g - Ameixa", "60g - Manga", "87g - Mamão", "26g - Caqui", "132g - Morango"] },
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (90g) + Feijão carioca cozido (70g)", s: ["90g - Arroz branco cozido + 70g - Feijão carioca cozido", "124g - Arroz branco cozido", "135g - Arroz integral", "123g - Macarrão cozido", "184g - Batata baroa cozida", "116g - Mandioca cozida", "126g - Inhame cozido", "189g - Batata doce cozida", "90g - Arroz branco cozido + 60g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "30g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "20g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Cenoura cozida (45g)", s: ["4 folhas médias - Alface", "30g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "20g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Beterraba cozida (45g)", s: ["4 folhas médias - Alface", "30g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "20g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (140g)", s: ["140g - Peito de frango grelhado", "162g - Peixe grelhado ou cozido (branco)", "153g - Lombo desfiado", "100g - Patinho grelhado/moído sem gordura", "79g - Proteína de soja texturizada", "12 claras - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "Ceia", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "100g - Atum light", "90g - Lombo desfiado", "30g - Proteína de soja texturizada", "6 claras - Omelete", "45g - Proteína de ervilha"] },
+                        { n: "Morango (60g)", s: ["53g - Melão", "25g - Maçã", "31g - Uva", "33g - Abacaxi", "50g - Melancia", "37g - Kiwi", "27g - Pêra", "36g - Ameixa", "40g - Mamão", "60g - Morango"] }
+                    ]
+                }],
+            1700: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Omelete (1  ovo inteiro + 3 claras)", s: ["1 ovo inteiro + 3 claras - Ovos mexidos/omelete/clara cozida", "56g - Peito de frango desfiado", "77g - Atum light", "50g - Lombo desfiado", "22g - Whey", "40g - Patinho moído sem gordura", "39g - Proteína de soja texturizada", "22g - Proteína de ervilha"] },
+                        { n: "Maçã (150g)", s: ["304g - Melão", "150g - Maçã", "175g - Uva", "185g - Abacaxi", "281g - Melancia", "207g - Kiwi", "150g - Pêra", "200g - Ameixa", "152g - Manga", "219g - Mamão", "67g - Caqui", "335g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Leite desnatado (200ml)", s: ["158ml - Iogurte triple 0", "175ml - Iogurte natural desnatado"] },
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "100g - Atum light", "90g - Lombo desfiado", "45g - Proteína de ervilha", "30g - Proteína de soja texturizada", "6 claras - Omelete"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (100g) + Feijão carioca cozido (100g)", s: ["100g - Arroz branco cozido + 100g - Feijão carioca cozido", "148g - Arroz branco cozido", "162g - Arroz integral", "147g - Macarrão cozido", "220g - Batata baroa cozida", "139g - Mandioca cozida", "151g - Inhame cozido", "226g - Batata doce cozida", "100g - Arroz branco cozido + 90g - Lentilha cozida"] },
+                        { n: "Brócolis cozido (100g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "70g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Couve-flor cozida (80g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "70g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (150g)", s: ["150g - Peito de frango grelhado", "175g - Peixe grelhado ou cozido (branco)", "112g - Lombo desfiado", "109g - Patinho grelhado/moído sem gordura", "85g - Proteína de soja texturizada", "11 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "90g - Lombo desfiado", "100g - Atum light", "30g - Proteína de soja texturizada", "6 claras - Ovos mexidos/cozidos", "45g - Proteína de ervilha"] },
+                        { n: "Iogurte natural desnatado (250ml)", s: ["225ml - Iogurte triple 0", "365ml - Leite desnatado"] },
+                        { n: "Abacaxi (110g)", s: ["181g - Melão", "82g - Maçã", "104g - Uva", "110g - Abacaxi", "168g - Melancia", "124g - Kiwi", "89g - Pêra", "119g - Ameixa", "90g - Manga", "131g - Mamão", "40g - Caqui", "200g - Morango"] },
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (100g) + Feijão carioca cozido (100g)", s: ["100g - Arroz branco cozido + 100g - Feijão carioca cozido", "148g - Arroz branco cozido", "162g - Arroz integral", "147g - Macarrão cozido", "220g - Batata baroa cozida", "139g - Mandioca cozida", "151g - Inhame cozido", "226g - Batata doce cozida", "100g - Arroz branco cozido + 90g - Lentilha cozida"] },
+                        { n: "Brócolis cozido (100g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "70g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Couve-flor cozida (80g)", s: ["4 folhas médias - Alface", "70g - Rúcula", "70g - Pepino", "70g - Chuchu", "70g - Abobrinha", "70g - Vagem", "70g - Berinjela", "70g - Tomate", "70g - Repolho", "70g - Escarola", "70g - Couve", "70g - Couve-flor"] },
+                        { n: "Patinho grelhado/moído sem gordura (130g)", s: ["181g - Peito de frango grelhado", "210g - Peixe grelhado ou cozido (branco)", "135g - Lombo desfiado", "130g - Patinho grelhado/moído sem gordura", "102g - Proteína de soja texturizada", "14 claras + 1 gema - Ovos mexidos/cozidos"] },
+                        { n: "Melão (120g)", s: ["120g - Melão", "55g - Maçã", "70g - Uva", "72g - Abacaxi", "110g - Melancia", "81g - Kiwi", "59g - Pêra", "79g - Ameixa", "60g - Manga", "87g - Mamão", "26g - Caqui", "132g - Morango"] },
+                    ]
+                }],
+            1800: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Omelete (4  claras) + Queijo minas frescal (15g)", s: ["4 claras - Ovos mexidos/omelete/clara cozida + 15g - Queijo minas frescal", "47g - Peito de frango desfiado", "65g - Atum light", "42g - Lombo desfiado", "19g - Whey", "40g - Patinho moído sem gordura", "33g - Proteína de soja texturizada", "19g - Proteína de ervilha"] },
+                        { n: "Maçã (140g)", s: ["304g - Melão", "150g - Maçã", "175g - Uva", "185g - Abacaxi", "281g - Melancia", "207g - Kiwi", "150g - Pêra", "200g - Ameixa", "152g - Manga", "219g - Mamão", "67g - Caqui", "335g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Iogurte triple 0 (91ml)", s: ["150ml - Leite desnatado", "101ml - Iogurte natural desnatado"] },
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "100g - Atum light", "90g - Lombo desfiado", "45g - Proteína de ervilha", "30g - Proteína de soja texturizada", "6 claras - Omelete"] },
+                        { n: "Melão (181g)", s: ["181g - Melão", "82g - Maçã", "104g - Uva", "110g - Abacaxi", "168g - Melancia", "124g - Kiwi", "89g - Pêra", "119g - Ameixa", "90g - Manga", "131g - Mamão", "40g - Caqui", "200g - Morango"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (100g) + Feijão carioca cozido (100g)", s: ["100g - Arroz branco cozido + 100g - Feijão carioca cozido", "148g - Arroz branco cozido", "162g - Arroz integral", "147g - Macarrão cozido", "220g - Batata baroa cozida", "139g - Mandioca cozida", "151g - Inhame cozido", "226g - Batata doce cozida", "100g - Arroz branco cozido + 90g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas pequenas - Alface", "60g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "30g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Couve-flor cozida (60g)", s: ["4 folhas pequenas - Alface", "60g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "30g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Tomate cereja (4 unidades)", s: ["4 folhas pequenas - Alface", "60g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "30g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (170g)", s: ["170g - Peito de frango grelhado", "198g - Peixe grelhado ou cozido (branco)", "127g - Lombo desfiado", "123g - Patinho grelhado/moído sem gordura", "95g - Proteína de soja texturizada", "13 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "90g - Lombo desfiado", "100g - Atum light", "30g - Proteína de soja texturizada", "6 claras - Ovos mexidos/cozidos", "45g - Proteína de ervilha"] },
+                        { n: "Leite desnatado (300ml)", s: ["176ml - Iogurte triple 0", "191ml - Iogurte natural desnatado"] },
+                        { n: "Morango (132g)", s: ["120g - Melão", "55g - Maçã", "70g - Uva", "72g - Abacaxi", "110g - Melancia", "81g - Kiwi", "59g - Pêra", "79g - Ameixa", "60g - Manga", "87g - Mamão", "26g - Caqui", "132g - Morango"] },
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (100g) + Feijão carioca cozido (100g)", s: ["100g - Arroz branco cozido + 100g - Feijão carioca cozido", "148g - Arroz branco cozido", "162g - Arroz integral", "147g - Macarrão cozido", "220g - Batata baroa cozida", "139g - Mandioca cozida", "151g - Inhame cozido", "226g - Batata doce cozida", "100g - Arroz branco cozido + 90g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas pequenas - Alface", "60g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "30g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Couve-flor cozida (60g)", s: ["4 folhas pequenas - Alface", "60g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "30g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Tomate cereja (4 unidades)", s: ["4 folhas pequenas - Alface", "60g - Rúcula", "60g - Pepino", "60g - Chuchu", "60g - Abobrinha", "30g - Vagem", "60g - Berinjela", "60g - Tomate", "60g - Repolho", "60g - Escarola", "60g - Couve", "60g - Couve-flor"] },
+                        { n: "Patinho grelhado/moído sem gordura (150g)", s: ["207g - Peito de frango grelhado", "242g - Peixe grelhado ou cozido (branco)", "156g - Lombo desfiado", "150g - Patinho grelhado/moído sem gordura", "117g - Proteína de soja texturizada"] },
+                        { n: "Uva (155g)", s: ["270g - Melão", "121g - Maçã", "155g - Uva", "164g - Abacaxi", "249g - Melancia", "184g - Kiwi", "133g - Pêra", "177g - Ameixa", "134g - Manga", "194g - Mamão", "59g - Caqui", "297g - Morango"] }
+                    ]
+                }],
+            1900: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Omelete (4  claras) + Queijo minas frescal (15g)", s: ["4 claras - Ovos mexidos/omelete/clara cozida + 15g - Queijo minas frescal", "47g - Peito de frango desfiado", "65g - Atum light", "42g - Lombo desfiado", "19g - Whey", "40g - Patinho moído sem gordura", "33g - Proteína de soja texturizada", "19g - Proteína de ervilha"] },
+                        { n: "Morango (100g)", s: ["90g - Melão", "41g - Maçã", "52g - Uva", "55g - Abacaxi", "84g - Melancia", "62g - Kiwi", "45g - Pêra", "60g - Ameixa", "45g - Manga", "65g - Mamão", "20g - Caqui", "100g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Abóbora cabotian cozida (240g)", s: ["92g - Arroz branco cozido", "100g - Arroz integral", "91g - Macarrão cozido", "137g - Batata baroa cozida", "86g - Mandioca cozida", "94g - Inhame cozido", "141g - Batata doce cozida"] },
+                        { n: "Peito de frango grelhado sem pele (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Proteína de ervilha", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Omelete"] }
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (140g) + Feijão carioca cozido (100g)", s: ["140g - Arroz branco cozido + 100g - Feijão carioca cozido", "188g - Arroz branco cozido", "205g - Arroz integral", "187g - Macarrão cozido", "280g - Batata baroa cozida", "176g - Mandioca cozida", "191g - Inhame cozido", "287g - Batata doce cozida", "140g - Arroz branco cozido + 90g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Cenoura cozida (80g)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Tomate (80g)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Patinho grelhado/moído sem gordura (150g)", s: ["270g - Peito de frango grelhado", "242g - Peixe grelhado ou cozido (branco)", "156g - Lombo desfiado", "150g - Patinho grelhado/moído sem gordura", "117g - Proteína de soja texturizada"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "90g - Lombo desfiado", "100g - Atum light", "30g - Proteína de soja texturizada", "6 claras - Ovos mexidos/cozidos", "45g - Proteína de ervilha"] },
+                        { n: "Iogurte natural desnatado (101ml)", s: ["91ml - Iogurte triple 0", "150ml - Leite desnatado"] },
+                        { n: "Aveia em flocos (20g)", s: ["17g - Granola sem açúcar"] },
+                        { n: "Melão (270g)", s: ["270g - Melão", "121g - Maçã", "155g - Uva", "164g - Abacaxi", "249g - Melancia", "184g - Kiwi", "133g - Pêra", "177g - Ameixa", "134g - Manga", "194g - Mamão", "59g - Caqui", "297g - Morango"] },
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (140g) + Feijão carioca cozido (100g)", s: ["140g - Arroz branco cozido + 100g - Feijão carioca cozido", "188g - Arroz branco cozido", "205g - Arroz integral", "187g - Macarrão cozido", "280g - Batata baroa cozida", "176g - Mandioca cozida", "191g - Inhame cozido", "287g - Batata doce cozida", "140g - Arroz branco cozido + 90g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Cenoura cozida (80g)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Tomate (80g)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (160g)", s: ["160g - Peito de frango grelhado", "185g - Peixe grelhado ou cozido (branco)", "120g - Lombo desfiado", "116g - Patinho grelhado/moído sem gordura", "90g - Proteína de soja texturizada"] }
+                    ]
+                }],
+            2000: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Omelete (1 ovo inteiro + 3  claras) + Peito de frango desfiado/grelhado (40g)", s: ["7 claras + 1 gema - Ovos mexidos/omelete/clara cozida", "114g - Peito de frango desfiado", "168g - Atum light", "86g - Lombo desfiado", "45g - Whey", "83g - Patinho moído sem gordura", "64g - Proteína de soja texturizada", "45g - Proteína de ervilha"] },
+                        { n: "Mamão (194g)", s: ["270g - Melão", "121g - Maçã", "155g - Uva", "164g - Abacaxi", "249g - Melancia", "184g - Kiwi", "133g - Pêra", "177g - Ameixa", "134g - Manga", "194g - Mamão", "59g - Caqui", "297g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "90g - Lombo desfiado", "100g - Atum light", "30g - Proteína de soja texturizada", "6 claras - Ovos mexidos/cozidos", "45g - Proteína de ervilha"] },
+                        { n: "Iogurte natural desnatado (200ml)", s: ["154ml - Iogurte triple 0", "250ml - Leite desnatado"] },
+                        { n: "Aveia em flocos (30g)", s: ["28g - Granola sem açúcar"] },
+                        { n: "Maçã (121g)", s: ["270g - Melão", "121g - Maçã", "155g - Uva", "164g - Abacaxi", "249g - Melancia", "184g - Kiwi", "133g - Pêra", "177g - Ameixa", "134g - Manga", "194g - Mamão", "59g - Caqui", "297g - Morango"] },
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (140g)", s: ["100g - Arroz branco cozido + 90g - Feijão carioca cozido", "140g - Arroz branco cozido", "152g - Arroz integral", "139g - Macarrão cozido", "208g - Batata baroa cozida", "131g - Mandioca cozida", "142g - Inhame cozido", "213g - Batata doce cozida", "100g - Arroz branco cozido + 80g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Cenoura cozida (80g)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Tomate (80g)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Patinho grelhado/moído sem gordura (150g)", s: ["207g - Peito de frango grelhado", "242g - Peixe grelhado ou cozido (branco)", "156g - Lombo desfiado", "150g - Patinho grelhado/moído sem gordura", "117g - Proteína de soja texturizada"] }
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "90g - Lombo desfiado", "100g - Atum light", "30g - Proteína de soja texturizada", "6 claras - Ovos mexidos/cozidos", "45g - Proteína de ervilha"] },
+                        { n: "Aveia em flocos (30g)", s: ["28g - Granola sem açúcar"] },
+                        { n: "Pêra (133g)", s: ["270g - Melão", "121g - Maçã", "155g - Uva", "164g - Abacaxi", "249g - Melancia", "184g - Kiwi", "133g - Pêra", "177g - Ameixa", "134g - Manga", "194g - Mamão", "59g - Caqui", "297g - Morango"] },
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (140g)", s: ["100g - Arroz branco cozido + 90g - Feijão carioca cozido", "140g - Arroz branco cozido", "152g - Arroz integral", "139g - Macarrão cozido", "208g - Batata baroa cozida", "131g - Mandioca cozida", "142g - Inhame cozido", "213g - Batata doce cozida", "100g - Arroz branco cozido + 80g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Cenoura cozida (80g)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Tomate (80g)", s: ["4 folhas médias - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "80g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Peito de frango grelhado sem pele (170g)", s: ["170g - Peito de frango grelhado", "198g - Peixe grelhado ou cozido (branco)", "127g - Lombo desfiado", "123g - Patinho grelhado/moído sem gordura", "95g - Proteína de soja texturizada", "13 claras + 1 gema - Ovos mexidos/cozidos"] }
+                    ]
+                }],
+            2200: [
+                {
+                    r: "DESJEJUM", i: [
+                        { n: "Omelete / ovo mexido (4 claras) + Queijo minas frescal (15g)", s: ["4 claras - Ovos mexidos/omelete/clara cozida + 15g - Queijo minas frescal", "47g - Peito de frango desfiado", "65g - Atum light", "42g - Lombo desfiado", "19g - Whey", "40g - Patinho moído sem gordura", "33g - Proteína de soja texturizada", "19g - Proteína de ervilha"] },
+                        { n: "Melancia (249g)", s: ["270g - Melão", "121g - Maçã", "155g - Uva", "164g - Abacaxi", "249g - Melancia", "184g - Kiwi", "133g - Pêra", "177g - Ameixa", "134g - Manga", "194g - Mamão", "59g - Caqui", "297g - Morango"] }
+                    ]
+                },
+                {
+                    r: "COLAÇÃO", i: [
+                        { n: "Whey (30g)", s: ["80g - Peito de frango grelhado", "90g - Lombo desfiado", "100g - Atum light", "30g - Proteína de soja texturizada", "6 claras - Ovos mexidos/cozidos", "45g - Proteína de ervilha"] },
+                        { n: "Iogurte natural desnatado (200ml)", s: ["154ml - Iogurte triple 0", "250ml - Leite desnatado"] },
+                        { n: "Aveia em flocos (29g)", s: ["27g - Granola sem açúcar"] },
+                        { n: "Melão (270g)", s: ["270g - Melão", "121g - Maçã", "155g - Uva", "164g - Abacaxi", "249g - Melancia", "184g - Kiwi", "133g - Pêra", "177g - Ameixa", "134g - Manga", "194g - Mamão", "59g - Caqui", "297g - Morango"] },
+                    ]
+                },
+                {
+                    r: "ALMOÇO", i: [
+                        { n: "Arroz branco cozido (140g) + Feijão carioca cozido (100g)", s: ["140g - Arroz branco cozido + 100g - Feijão carioca cozido", "188g - Arroz branco cozido", "205g - Arroz integral", "187g - Macarrão cozido", "280g - Batata baroa cozida", "176g - Mandioca cozida", "196g - Inhame cozido", "287g - Batata doce cozida", "140g - Arroz branco cozido + 90g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas grandes - Alface", "40g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "60g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Tomate cereja (6 unidades)", s: ["4 folhas grandes - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "60g - Repolho", "80g - Escarola", "40g - Couve", "80g - Couve-flor"] },
+                        { n: "Beterraba cozida (80g)", s: ["4 folhas grandes - Alface", "40g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "80g - Vagem", "80g - Berinjela", "80g - Tomate", "60g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Patinho grelhado/moído sem gordura (150g)", s: ["207g - Peito de frango grelhado", "242g - Peixe grelhado ou cozido (branco)", "156g - Lombo desfiado", "150g - Patinho grelhado/moído sem gordura", "117g - Proteína de soja texturizada"] },
+                        { n: "Melão (270g)", s: ["270g - Melão", "121g - Maçã", "155g - Uva", "164g - Abacaxi", "249g - Melancia", "184g - Kiwi", "133g - Pêra", "177g - Ameixa", "134g - Manga", "194g - Mamão", "59g - Caqui", "297g - Morango"] },
+                    ]
+                },
+                {
+                    r: "LANCHE DA TARDE", i: [
+                        { n: "Mandioca cozida (102g)", s: ["109g - Arroz branco cozido", "119g - Arroz integral", "108g - Macarrão cozido", "162g - Batata baroa cozida", "102g - Mandioca cozida", "111g - Inhame cozido", "167g - Batata doce cozida"] },
+                        { n: "Peito de frango grelhado/desfiado (100g)", s: ["100g - Peito de frango grelhado", "122g - Peixe grelhado ou cozido (branco)", "80g - Lombo desfiado", "72g - Patinho grelhado/moído sem gordura", "57g - Proteína de soja texturizada", "6 claras + 1 gema - Ovos mexidos/cozidos"] },
+                    ]
+                },
+                {
+                    r: "JANTAR", i: [
+                        { n: "Arroz branco cozido (140g) + Feijão carioca cozido (100g)", s: ["140g - Arroz branco cozido + 100g - Feijão carioca cozido", "188g - Arroz branco cozido", "205g - Arroz integral", "187g - Macarrão cozido", "280g - Batata baroa cozida", "176g - Mandioca cozida", "196g - Inhame cozido", "287g - Batata doce cozida", "140g - Arroz branco cozido + 90g - Lentilha cozida"] },
+                        { n: "Alface (4 folhas)", s: ["4 folhas grandes - Alface", "40g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "40g - Vagem", "80g - Berinjela", "80g - Tomate", "60g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Tomate cereja (6 unidades)", s: ["4 folhas grandes - Alface", "80g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "40g - Vagem", "80g - Berinjela", "80g - Tomate", "60g - Repolho", "80g - Escarola", "40g - Couve", "80g - Couve-flor"] },
+                        { n: "Beterraba cozida (80g)", s: ["4 folhas grandes - Alface", "40g - Rúcula", "80g - Pepino", "80g - Chuchu", "80g - Abobrinha", "40g - Vagem", "80g - Berinjela", "80g - Tomate", "60g - Repolho", "80g - Escarola", "80g - Couve", "80g - Couve-flor"] },
+                        { n: "Patinho grelhado/moído sem gordura (150g)", s: ["207g - Peito de frango grelhado", "242g - Peixe grelhado ou cozido (branco)", "156g - Lombo desfiado", "150g - Patinho grelhado/moído sem gordura", "117g - Proteína de soja texturizada"] }
+                    ]
+                }],
+
+        };
+
+        const patologiaDB = {
+            "Agachamento": { p: "Dor no Joelho / Condromalácia", s: "Cadeira Extensora", o: "Evite amplitudes que gerem estalos ou dor aguda." },
+            "Leg Press": { p: "Hérnia de Disco / Lombalgia", s: "Afundo com Halteres", o: "Mantenha o tronco ereto para aliviar a pressão discal." },
+            "Supino": { p: "Impacto no Ombro", s: "Supino com Halteres (Pegada Neutra)", o: "A pegada neutra protege o manguito rotador." },
+            "Desenvolvimento": { p: "Bursite", s: "Elevação Lateral", o: "Não ultrapasse a linha dos ombros." }
+        };
+
+        const treinosDB = {
+            // --- INICIANTE ---
+            "iniciante_A": {
+                f: ["A: Full Body"],
+                cardio: "3 vezes por semana, pós treino 20 minutos a 60% do bpm",
+                divisao: {
+                    "A": [
+                        { nome: "Leg press 45", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Hack", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Mesa flexora", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Supino máquina", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Puxada frente pegada neutra", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Desenvolvimento máquina", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Tríceps corda", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Rosca alternada", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Panturrilha sentada", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Abdominal canivete", series: "3", reps: "12", descanso: "45 seg", obs: "" },
+                    ]
+                }
+            },
+            "iniciante_AB": {
+                f: ["A: Inferiores", "B: Superiores/Core"],
+                cardio: "3 vezes por semana, pós treino 25 minutos a 60% do bpm",
+                divisao: {
+                    "A": [
+                        { nome: "Leg press 45", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Agachamento smith", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Mesa flexora", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação pélvica", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira abdutora", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Panturrilha sentada", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Abdominal solo pés elevados", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação de membros inferiores solo", series: "4", reps: "12", descanso: "45 seg", obs: "" }
+                    ],
+                    "B": [
+                        { nome: "Supino máquina", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Puxada frente pegada neutra", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Remada baixa máquina", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Desenvolvimento máquina", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Rosca direta simultanea", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Tríceps corda", series: "4", reps: "12", descanso: "45 seg", obs: "" }
+                    ]
+                }
+            },
+            "iniciante_ABC": {
+                f: ["A: Quadriceps", "B: Superiores", "C: Posteriores"],
+                cardio: "3 vezes por semana, pós treino 25 minutos a 65% do bpm",
+                divisao: {
+                    "A": [
+                        { nome: "Leg press 45", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira extensora", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Agachamento smith", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Agachamento hack", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Gemeos no smith", series: "4", reps: "12", descanso: "45 seg", obs: "" }
+                    ],
+                    "B": [
+                        { nome: "Supino máquina", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Desenvolvimento máquina", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação lateral halter", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Tríceps corda", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Rosca alternada", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Abdominal máquina", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação de membros inferiores na prancha declinada", series: "4", reps: "12", descanso: "45 seg", obs: "" }
+                    ],
+                    "C": [
+                        { nome: "Mesa flexora", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira flexora", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira abdutora", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação pélvica", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Puxada frente", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Remada baixa pegada aberta", series: "4", reps: "12", descanso: "45 seg", obs: "" }
+                    ]
+                }
+            },
+            // --- INTERMEDIÁRIO ---
+            "intermediario_AB": {
+                f: ["A: Inferiores", "B: Superiores/Core"],
+                cardio: "4 vezes por semana, pós treino 3 minutos a 65% do bpm",
+                divisao: {
+                    "A": [
+                        { nome: "Agachamento Smith", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Leg press 45", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Afundo no smith", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Mesa flexora", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira flexora", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação pélvica", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Abdução cross", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Panturrilha", series: "4", reps: "12", descanso: "45 seg", obs: "" }
+                    ],
+                    "B": [
+                        { nome: "Fly reto", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Pulley frente", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Remada curvada barra", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Desenvolvimento máquina", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação lateral", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Rosca direta halter", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Tríceps testa", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Abdominal com a prancha declinada", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação de membros inferiores no bozu", series: "4", reps: "12", descanso: "45 seg", obs: "" }
+                    ]
+                }
+            },
+            "intermediario_ABC": {
+                f: ["A: Quadríceps", "B: Superiores", "C: Posterior/Glúteo"],
+                cardio: "30 minutos a 70%  do bpm",
+                exercicios: {
+                    "A": [
+                        { nome: "Agachamento livre", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Leg press 45", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Passada", series: "4", reps: "1 min", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira extensora", series: "4", reps: "7 + 7 + 7", descanso: "45 seg", obs: "Drop set" },
+                        { nome: "Cadeira adutora", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Panturrilha no leg 45", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                    ],
+                    "B": [
+                        { nome: "Peck deck", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Arnold press", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação lateral bco 45", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Remada curvada", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Pulley triangulo", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Rosca scott", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Tríceps testa", series: "4", reps: "14", descanso: "45 seg", obs: "" }
+                    ],
+                    "C": [
+                        { nome: "Stiff livre", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Mesa flexora", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira flexora", series: "4", reps: "10 + 10 + 10", descanso: "45 seg", obs: "Drop set" },
+                        { nome: "Elevação pélvica no Smith", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Glúteo cross perna estendida", series: "4", reps: "14 cada perna", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira abdutora", series: "4", reps: "10 + 10 + 10", descanso: "45 seg", obs: "Drop set" }
+                    ]
+                }
+            },
+            "intermediario_ABCD": {
+                f: ["A: Quadríceps", "B: Superiores", "C: Posterior/Glúteo"],
+                cardio: "30 minutos a 70%  do bpm",
+                exercicios: {
+                    "A": [
+                        { nome: "Agachamento livre", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Leg press 45", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Afundo smith", series: "4", reps: "14 cada perna", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira extensora", series: "4", reps: "21", descanso: "45 seg", obs: "7 rep curta embaixo + 7 curta em cima + 7 completa" },
+                        { nome: "Cadeira adutora", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Leg 180", series: "4", reps: "7 + 7 + 7", descanso: "45 seg", obs: "Drop set" },
+                    ],
+                    "B": [
+                        { nome: "Mesa flexora", series: "4", reps: "7 + 7 + 7", descanso: "45 seg", obs: "Drop set" },
+                        { nome: "Cadeira flexora ", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Stiff", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Pulley frente aberto", series: "4", reps: "14", descanso: "45 seg", obs: "" },
+                        { nome: "Remada baixa triangulo", series: "4", reps: "14", descanso: "45 seg", obs: "" }
+                    ],
+                    "C": [
+                        { nome: "Elevação pélvica no Smith", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Búlgaro", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Cadeira abdutora", series: "4", reps: "10 + 10 + 10", descanso: "45 seg", obs: "Drop set" },
+                        { nome: "Agachamento sumo", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Panturrilha no Smith", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Panturrilha no Smith", series: "4", reps: "10", descanso: "45 seg", obs: "Drop set" }
+                    ],
+                    "D": [
+                        { nome: "Supino máquina", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação lateral no cross unilateral", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Desenvolvimento halter", series: "4", reps: "10", descanso: "45 seg", obs: "Drop set" },
+                        { nome: "Tríceps pulley", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Tríceps testa", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Rosca alternada", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Abdomen elevação de membros inferiores na paralela", series: "4", reps: "10", descanso: "45 seg", obs: "" },
+                        { nome: "Abdominal máquina", series: "4", reps: "10 + 10 + 10", descanso: "45 seg", obs: "Drop set" }
+                    ]
+                }
+            },
+            // --- AVANÇADO ---
+            "avancado_AB": {
+                f: ["A: Inferiores", "B: Superiores"],
+                cardio: "6 vezes por semana, pós treino 35 minutos a 75% do bpm",
+                exercicios: {
+                    "A": [
+                        { nome: "Agachamento livre", series: "4", reps: "12", descanso: "45 seg", obs: "" },
+                        { nome: "Leg press 45", series: "5", reps: "10 + 10 seg isometria + 10", descanso: "45 seg", obs: "A isometria deve ser em um ângulo que fique no meio do movimento" },
+                        { nome: "Passada", series: "4", reps: "1 minuto", descanso: "45 seg", obs: "" },
+                        { nome: "Stiff barra", series: "4", reps: "16", descanso: "45 seg", obs: "" },
+                        { nome: "Mesa flexora", series: "4", reps: "10 + 10 + 10", descanso: "45 seg", obs: "Drop set" },
+                        { nome: "Cadeira adutora", series: "5", reps: "16", descanso: "45 seg", obs: "" },
+                        { nome: "Elevação pélvica", series: "5", reps: "16", descanso: "45 seg", obs: "" },
+                        { nome: "Panturrilha em pé", series: "5", reps: "16", descanso: "45 seg", obs: "" },
+                    ],
+                    "B": [
+                        { nome: "Peck deck", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" },
+                        { nome: "Remada curvada", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" },
+                        { nome: "Pulldown", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" },
+                        { nome: "Pulley frente pegada neutra", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" },
+                        { nome: "Desenvolvimento arnold", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" },
+                        { nome: "Elevação frontal corda", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" },
+                        { nome: "Rosca martelo", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" },
+                        { nome: "Rosca direta pulley", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" },
+                        { nome: "Tríceps coice", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" },
+                        { nome: "Tríceps testa", series: "4", reps: "15/12/10/8", descanso: "45 seg", obs: "Progressão de carga" }
+                    ]
+                }
+            },
+            "avancado_ABC": {
+                f: ["A: Inferiores", "B: Superiores", "C: Posteriores"],
+                cardio: "6 vezes por semana, pós treino 35 minutos a 75% do bpm",
+                exercicios: {
+                    "A": [
+                        { nome: "Agachamento livre", series: "5", reps: "15", descanso: "1 min", obs: "" },
+                        { nome: "Hack machine", series: "5", reps: "7 + 7 + 7", descanso: "1 min", obs: "Drop set" },
+                        { nome: "Cadeira extensora", series: "10", reps: "10", descanso: "10 seg", obs: "Rest pause " },
+                        { nome: "Leg 45", series: "4", reps: "21", descanso: "1 min", obs: "7 curta em baixo + 7 curta em cima + 7 completa" },
+                        { nome: "Cadeira abdutora", series: "4", reps: "20", descanso: "1 min", obs: "" },
+                        { nome: "Elevação pélvica", series: "4", reps: "15/ 12/ 10 /8", descanso: "1 min", obs: "Progressão de carga" },
+                        { nome: "Búlgaro", series: "3", reps: "15", descanso: "1 min", obs: "" },
+                        { nome: "Panturrilha", series: "3", reps: "15", descanso: "1 min", obs: "" },
+                    ],
+                    "B": [
+                        { nome: "Peck deck + Supino reto barra", series: "5", reps: "12", descanso: "1 min", obs: "Biset" },
+                        { nome: "Desenvolvimento máquina + Elevação lateral", series: "5", reps: "12", descanso: "1 min", obs: "Biset" },
+                        { nome: "Tríceps corda + Tríceps testa", series: "5", reps: "12", descanso: "1 min", obs: "Biset" },
+                        { nome: "Rosca direta alternada + Rosca martelo barra H", series: "5", reps: "12", descanso: "1 min", obs: "Biset" },
+                    ],
+                    "C": [
+                        { nome: "Cadeira flexora", series: "10", reps: "10", descanso: "10 seg", obs: "Rest pause" },
+                        { nome: "Mesa flexora", series: "4", reps: "15/12/10/8", descanso: "1 min", obs: "Progressão de carga" },
+                        { nome: "Stiff", series: "5", reps: "10", descanso: "1 min", obs: "" },
+                        { nome: "Flexora vertical", series: "4", reps: "10", descanso: "Sem descanso de uma perna para a outra", obs: "" },
+                        { nome: "Pulley frente + Remada curvada", series: "5", reps: "12", descanso: "1 min", obs: "Biset" },
+                        { nome: "Abdominal com a prancha declinada + Elevação de membros inferiores na prancha declinada ", series: "5", reps: "15", descanso: "1 min", obs: "Biset" },
+                        { nome: "Elevação frontal corda", series: "4", reps: "7 + 7 + 7", descanso: "1 min", obs: "Drop set" },
+                    ]
+                }
+            },
+            "avancado_ABC_2": {
+                f: ["A: Inferiores", "B: Superiores", "C: Posteriores", "D: Posteriores"],
+                cardio: "14 tiros de 1 min a 95% do bpm com intervalo de 1 min a 60% do bpm",
+                exercicios: {
+                    "A": [
+                        { nome: "Agachamento livre", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Leg 45", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Hack", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Cadeira extensora", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Cadeira adutora", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Passada", series: "1", reps: "1 min", descanso: "", obs: "" },
+                        { nome: "Fly reto", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Sup inclinado", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Desenvolvimento dumbell", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Elevação lateral", series: "4", reps: "20", descanso: "30 seg", obs: "" }
+                    ],
+                    "B": [
+                        { nome: "Stiff", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Mesa flexora", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Flexão nordica", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Cadeira flexora", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Gêmeos smith", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Gêmeos maq", series: "1", reps: "1 min", descanso: "", obs: "" },
+                        { nome: "Pulley frente", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Remada curvada", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Remada maquina", series: "4", reps: "20", descanso: "30 seg", obs: "" }
+                    ],
+                    "C": [
+                        { nome: "Elevacao Pelvica ", series: "4", reps: "20", descanso: "Sem descanso", obs: "" },
+                        { nome: "Cadeira abdutora", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Glúteo solo joelho extendido", series: "4", reps: "20", descanso: "Sem descanso", obs: "" },
+                        { nome: "Rosca alternada bco 45", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Rosca scott", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Triceps pulley", series: "1", reps: "1 min", descanso: "", obs: "" },
+                        { nome: "Triceps testa", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Elevação MMII BOZU", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Elevação MMII Prancha", series: "4", reps: "20", descanso: "30 seg", obs: "" },
+                        { nome: "Abd prancha", series: "4", reps: "20", descanso: "30 seg", obs: "" }
+                    ]
+                }
+            },
+            "avancado_ABCD": {
+                f: ["A: Inferiores", "B: Superiores", "C: Posteriores", "D: Posteriores"],
+                cardio: "14 tiros de 1 min a 95% do bpm com intervalo de 1 min a 60% do bpm",
+                exercicios: {
+                    "A": [
+                        { nome: "Agachamento livre", series: "5", reps: "15", descanso: "1 min", obs: "" },
+                        { nome: "Leg 45", series: "4", reps: "12", descanso: "1 min", obs: "Slow excêntrica 5s descendo" },
+                        { nome: "Cadeira extensora", series: "10", reps: "10", descanso: "10 seg", obs: "Rest pause" },
+                        { nome: "Hack + Passada", series: "4", reps: "10 / 15 cada perna", descanso: "1 min", obs: "Biset" },
+                        { nome: "Leg 180", series: "2", reps: "exaustao", descanso: "1 min", obs: "Drop até o final do peso" }
+                    ],
+                    "B": [
+                        { nome: "Cadeira flexora", series: "10", reps: "10", descanso: "10 seg", obs: "Rest pause" },
+                        { nome: "Mesa flexora", series: "4", reps: "15/ 12/ 10/ 8", descanso: "1 min", obs: "Progressão de carga" },
+                        { nome: "Stiff", series: "5", reps: "10", descanso: "1 min", obs: "" },
+                        { nome: "Flexora vertical", series: "4", reps: "10", descanso: "Sem descanso de uma perna para a outra", obs: "" },
+                        { nome: "Elevação de membros inferiores na paralela", series: "4", reps: "15", descanso: "1 min", obs: "" },
+                        { nome: "Abdominal solo", series: "4", reps: "15", descanso: "", obs: "" },
+                        { nome: "Abdominal máquina", series: "4", reps: "15", descanso: "1 min", obs: "" }
+                    ],
+                    "C": [
+                        { nome: "Elevação pélvica", series: "10", reps: "10", descanso: "10 seg", obs: "Rest pause" },
+                        { nome: "Búlgaro", series: "4", reps: "10", descanso: "1 min", obs: "" },
+                        { nome: "Agachamento sumo", series: "4", reps: "10", descanso: "Sem descanso", obs: "" },
+                        { nome: "Cadeira abdutora ", series: "4", reps: "10 + 10 seg no pico de contração", descanso: "1 min", obs: "" },
+                        { nome: "Pulley frente triangulo", series: "4", reps: "10", descanso: "1 min", obs: "" },
+                        { nome: "Remada curvada", series: "4", reps: "10", descanso: "", obs: "" },
+                        { nome: "Remada baixa pegada aberta", series: "4", reps: "10", descanso: "1 min", obs: "" }
+                    ],
+                    "D": [
+                        { nome: "Supino máquina", series: "4", reps: "14", descanso: "1 min", obs: "" },
+                        { nome: "Rosca scott", series: "4", reps: "14", descanso: "1 min", obs: "" },
+                        { nome: "Rosca direta cross", series: "4", reps: "14", descanso: "Sem descanso", obs: "" },
+                        { nome: "Tríceps testa", series: "4", reps: "14", descanso: "Sem descanso", obs: "" },
+                        { nome: "Tríceps corda", series: "4", reps: "14", descanso: "Sem descanso", obs: "" },
+                        { nome: "Desenvolvimento arnold", series: "4", reps: "14", descanso: "Sem descanso", obs: "" },
+                        { nome: "Elevação frontal anilha", series: "4", reps: "14", descanso: "Sem descanso", obs: "" }
+                    ]
+                }
+            },
+        };
+
+        function calculateEverything() {
+            const w = parseFloat(document.getElementById('w').value);
+            const h = parseFloat(document.getElementById('h').value);
+            const a = parseInt(document.getElementById('a').value);
+            const g = document.getElementById('g').value;
+            if (!w || !h || !a) return alert("Preencha todos os campos!");
+
+            const imc = w / ((h / 100) * (h / 100));
+            let tmb = (imc < 25) ?
+                ((g === 'm') ? 66.5 + (13.75 * w) + (5.003 * h) - (6.75 * a) : 655.1 + (9.563 * w) + (1.85 * h) - (4.676 * a)) :
+                ((10 * w) + (6.25 * h) - (5 * a) + (g === 'm' ? 5 : -161));
+
+            const mMusc = parseFloat(document.getElementById('met_musc').value);
+            const tMusc = (parseFloat(document.getElementById('time_musc').value) || 0) / 7;
+            const mRun = parseFloat(document.getElementById('met_run').value);
+            const tRun = (parseFloat(document.getElementById('time_run').value) || 0) / 7;
+
+            const extra = Math.round(((mMusc * 3.5 * w / 200) * tMusc) + ((mRun * 3.5 * w / 200) * tRun));
+            const get = Math.round(tmb + extra);
+
+            document.getElementById('resIMC').innerText = imc.toFixed(1);
+            document.getElementById('resTMB').innerText = Math.round(tmb) + " kcal";
+            document.getElementById('resGET').innerText = get + " kcal";
+            document.getElementById('resStatus').innerText = (imc < 25 ? "Normal" : (imc < 30 ? "Sobrepeso" : "Obesidade"));
+            document.getElementById('resRow').classList.remove('hidden');
+
+            renderDietCards(get);
+            renderTreinoGrid();
+        }
+
+        // 2. Lógica para encontrar a dieta mais próxima
+        function encontrarDietaProxima(kcalAlvo) {
+            const opcoesSuficientes = Object.keys(dietasCustomDB).map(Number);
+            return opcoesSuficientes.reduce((prev, curr) => {
+                return (Math.abs(curr - kcalAlvo) < Math.abs(prev - kcalAlvo) ? curr : prev);
+            });
+        }
+
+        // 3. Atualização da função que exibe os botões
+        function renderDietCards(get) {
+            const sec = document.getElementById('sec-dietas');
+
+            // Calcula os alvos reais
+            const alvoLento = get - 400;
+            const alvoRapido = get - 800;
+
+            // Encontra qual das suas dietas do Word melhor se encaixa
+            const dietaSugeridaLenta = encontrarDietaProxima(alvoLento);
+            const dietaSugeridaRapida = encontrarDietaProxima(alvoRapido);
+
+            sec.innerHTML = `
+                <div onclick="openDietPlan(${dietaSugeridaLenta}, 'Perda Gradual')" class="glass p-8 rounded-[2rem] border-l-4 border-emerald-500 cursor-pointer hover:bg-emerald-500/5 transition">
+                    <p class="text-[9px] font-bold text-slate-500 uppercase">Protocolo Lento (-400 kcal)</p>
+                    <h4 class="text-2xl font-black italic">Alvo: ${alvoLento} kcal</h4>
+                    <p class="text-[10px] text-emerald-400 font-bold mt-1">Sugerindo sua dieta de: ${dietaSugeridaLenta} kcal →</p>
+                </div>
+
+                <div onclick="openDietPlan(${dietaSugeridaRapida}, 'Perda Agressiva')" class="glass p-8 rounded-[2rem] border-l-4 border-red-500 cursor-pointer hover:bg-red-500/5 transition">
+                    <p class="text-[9px] font-bold text-slate-500 uppercase">Protocolo Rápido (-800 kcal)</p>
+                    <h4 class="text-2xl font-black italic">Alvo: ${alvoRapido} kcal</h4>
+                    <p class="text-[10px] text-red-400 font-bold mt-1">Sugerindo sua dieta de: ${dietaSugeridaRapida} kcal →</p>
+                </div>
+            `;
+        }
+
+        function openDietPlan(kcalId, obj) {
+            const dieta = dietasCustomDB[kcalId];
+            if (!dieta) return alert("Dieta ainda não cadastrada.");
+
+            document.getElementById('mDietTitle').innerText = kcalId + " kcal";
+            document.getElementById('mDietDesc').innerText = "Cardápio Word: " + obj;
+
+            let html = "";
+            // Renderização do Cardápio
+            dieta.forEach((p, idxP) => {
+                html += `<div class="p-5 bg-white/5 rounded-2xl border border-white/10 mb-4"><h5 class="text-emerald-500 text-[10px] font-black uppercase mb-3">${p.r}</h5>`;
+                p.i.forEach((item, idxI) => {
+                    html += `<div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl mb-1"><span class="text-sm font-medium">${item.n}</span>
+                        <button onclick="showWordSwaps(${kcalId}, ${idxP}, ${idxI})" class="text-[8px] font-black text-emerald-400 border border-emerald-500/20 px-2 py-1 rounded hover:bg-emerald-500/10 uppercase">Trocar</button></div>`;
+                });
+                html += `</div>`;
+            });
+
+            // SEÇÃO DE DICAS (Adicionada abaixo das refeições)
+            html += `
+                <div class="mt-8 p-6 bg-emerald-500/5 border-t-2 border-emerald-500 rounded-[2rem] space-y-4">
+                    <h6 class="text-emerald-500 font-black italic uppercase text-xs">⚠️ Orientações da Primeira Fase</h6>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[11px] leading-relaxed text-slate-300">
+                        <ul class="space-y-2">
+                            <li>• <span class="text-white font-bold">Fidelidade:</span> Procure seguir de segunda a segunda.</li>
+                            <li>• <span class="text-white font-bold">Evite:</span> Temperos prontos, refrigerante e frituras.</li>
+                            <li>• <span class="text-white font-bold">Tempero:</span> Dê preferência para os caseiros.</li>
+                            <li>• <span class="text-white font-bold">Hidratação:</span> Tomar de 4,0 a 4,5 litros de água/dia.</li>
+                        </ul>
+                        <ul class="space-y-2">
+                            <li>• <span class="text-white font-bold">Prioridade:</span> Use a lista de substituições apenas se necessário.</li>
+                            <li>• <span class="text-white font-bold">Preparo:</span> Não utilizar óleo, azeite ou manteiga ao grelhar.</li>
+                            <li>• <span class="text-white font-bold">Utensílios:</span> Use panela de Teflon ou Cerâmica com água borrifada.</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('mDietContent').innerHTML = html;
+            document.getElementById('quickSwap').classList.add('hidden');
+            openModal('modalDieta');
+        }
+
+        function showWordSwaps(kcalId, pIdx, iIdx) {
+            const item = dietasCustomDB[kcalId][pIdx].i[iIdx];
+            const list = document.getElementById('swapList');
+            const box = document.getElementById('quickSwap');
+            list.innerHTML = "";
+            item.s.forEach(s => list.innerHTML += `<li>• ${s}</li>`);
+            box.classList.remove('hidden');
+            if (window.innerWidth < 768) box.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderTreinoGrid() {
+            const nvl = document.getElementById('n_treino').value;
+            const div = document.getElementById('f_treino').value;
+            const chave = `${nvl}_${div}`;
+
+            const treino = treinosDB[chave];
+            const container = document.getElementById('grid-container');
+
+            if (!container) return;
+
+            if (!treino) {
+                container.innerHTML = `<p class="text-zinc-500 text-xs italic">Protocolo "${chave}" em atualização...</p>`;
+                return;
+            }
+
+            // Ajuste aqui: Usamos o 'nvl' e 'div' para um título mais amigável
+            const tituloExibicao = `${nvl.charAt(0).toUpperCase() + nvl.slice(1)} - ${div}`;
+
+            container.innerHTML = `
+                <div onclick="openTreinoCard('${chave}')" 
+                    class="p-6 bg-zinc-900 border border-zinc-800 rounded-3xl cursor-pointer hover:border-emerald-500 transition-all group">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-emerald-500 font-black text-[10px] uppercase mb-1 tracking-widest">Plano Ativo</p>
+                            <h3 class="text-white font-bold text-xl">${tituloExibicao}</h3>
+                        </div>
+                        <div class="bg-emerald-500/10 p-2 rounded-full group-hover:bg-emerald-500/20">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-zinc-500 text-xs mt-4">Toque para ver exercícios e cardio</p>
+                </div>
+            `;
+        }
+
+        function openTreinoCard(titulo) {
+            const nivel = document.getElementById('n_treino').value; // ex: "iniciante"
+            const divisao = document.getElementById('f_treino').value; // ex: "ABC"
+
+            // Monta a chave combinada: "iniciante_ABC"
+            const treinoKey = `${nivel}_${divisao}`;
+
+            const dadosTreino = treinosDB[treinoKey];
+
+            // Se o treino não existir (ex: não existe iniciante_ABCD ainda), coloca um aviso
+            if (!dadosTreino) {
+                alert("Este protocolo ainda está sendo atualizado!");
+                return;
+            }
+            // 1. Criar os botões de abas (A, B, C...) baseado no que existe na 'divisao'
+            let abasHtml = '<div class="flex gap-2 mb-4">';
+            Object.keys(dadosTreino.divisao).forEach(letra => {
+                abasHtml += `
+            <button onclick="renderLista('${treinoKey}', '${letra}')" 
+                class="flex-1 py-2 bg-zinc-800 border border-zinc-700 rounded-lg font-bold text-xs hover:bg-zinc-700">
+                TREINO ${letra}
+            </button>`;
+            });
+            abasHtml += '</div>';
+
+            // 2. Coloca os botões e o espaço onde a lista vai aparecer
+            document.getElementById('mT-Content').innerHTML = `
+                <div class="mb-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl text-xs">
+                    <p class="text-blue-400 font-bold uppercase tracking-widest">Cardio:</p>
+                    <p>${dadosTreino.cardio}</p>
+                </div>
+                ${abasHtml}
+                <div id="lista-exercicios-target">
+                    <p class="text-center text-zinc-500 text-xs py-10">Selecione uma das letras acima para ver os exercícios.</p>
+                </div>
+            `;
+
+            openModal('modalTreino');
+        }
+
+        // Função para desenhar a lista de exercícios da letra clicada
+        function renderLista(treinoKey, letra) {
+            const lista = treinosDB[treinoKey].divisao[letra];
+            let html = "";
+
+            lista.forEach(ex => {
+                html += `
+            <div class="p-5 bg-white/5 rounded-2xl border border-white/5 flex flex-col gap-2 mb-3">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="font-bold text-sm">${ex.nome}</p>
+                        <p class="text-[9px] text-zinc-500 uppercase font-black tracking-widest">
+                            ${ex.series}x ${ex.reps} | ${ex.descanso}
+                        </p>
+                    </div>
+                    <button onclick="verPatologia('${ex.nome}')" class="text-[9px] bg-red-500/10 text-red-400 px-3 py-2 rounded-lg font-bold border border-red-500/10">DOR?</button>
+                </div>
+            </div>`;
+            });
+
+            document.getElementById('lista-exercicios-target').innerHTML = html;
+        }
+
+        function atualizarOpcoesDivisao() {
+            const nvl = document.getElementById('n_treino').value;
+            const fTreino = document.getElementById('f_treino');
+
+            // Objeto que mapeia o que deve aparecer em cada nível
+            const opcoesPorNivel = {
+                "iniciante": [
+                    { val: "A", text: "Treina 3 dias: Treino A" },
+                    { val: "AB", text: "Treina 4 dias: Treino AB" },
+                    { val: "ABC", text: "Treina 5 dias: Treino ABC" }
+                ],
+                "intermediario": [
+                    { val: "AB", text: "Treina 4 dias: Treino AB" },
+                    { val: "ABC", text: "Treina 5 dias: Treino ABC" },
+                    { val: "ABCD", text: "Treina 6 dias: Treino ABCD" }
+                ],
+                "avancado": [
+                    { val: "AB", text: "Treina 4 dias: Treino AB" },
+                    { val: "ABC", text: "Treina 5 dias: Treino ABC" },
+                    { val: "ABC_2", text: "Treina 5 dias: Treino ABC (Variação 2)" },
+                    { val: "ABCD", text: "Treina 6 dias: Treino ABCD" }
+                ]
+            };
+
+            // Limpa o select atual
+            fTreino.innerHTML = "";
+
+            // Preenche com as novas opções
+            opcoesPorNivel[nvl].forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.val;
+                option.textContent = opt.text;
+                fTreino.appendChild(option);
+            });
+        }
+
+        // Chame uma vez ao carregar a página para o primeiro preenchimento
+        window.addEventListener('load', () => {
+            atualizarOpcoesDivisao();
+            renderTreinoGrid();
+        });
+
+        function verPatologia(ex) {
+            const info = patologiaDB[ex] || { p: "Dor Geral", s: "Redução de Carga", o: "Reduza o peso e foque na execução." };
+            document.getElementById('patologiaContent').innerHTML = `
+                <div class="space-y-4">
+                    <div class="p-4 bg-red-500/5 rounded-xl border-l-2 border-red-500"><p class="text-[9px] font-black text-red-400 uppercase">Patologia:</p><p class="text-sm">${info.p}</p></div>
+                    <div class="p-4 bg-emerald-500/5 rounded-xl border-l-2 border-emerald-500"><p class="text-[9px] font-black text-emerald-400 uppercase">Trocar por:</p><p class="text-sm font-bold text-white">${info.s}</p></div>
+                    <p class="text-[11px] text-slate-400 italic">"${info.o}"</p>
+                </div>`;
+            document.getElementById('modalPatologia').classList.add('active');
+        }
+
+        function tab(t) {
+            // 1. Alterna a visibilidade das seções
+            const isDiet = t === 'dietas';
+            document.getElementById('sec-dietas').classList.toggle('hidden', !isDiet);
+            document.getElementById('sec-treinos').classList.toggle('hidden', isDiet);
+
+            // 2. Referências dos botões
+            const btnDiet = document.getElementById('t-dietas');
+            const btnTreino = document.getElementById('t-treinos');
+
+            // 3. Reseta os estilos (remove o branco e a linha)
+            [btnDiet, btnTreino].forEach(btn => {
+                btn.classList.remove('text-emerald-500', 'text-white', 'border-emerald-500');
+                btn.classList.add('text-slate-500', 'border-transparent');
+            });
+
+            // 4. Aplica o estilo ativo no botão clicado
+            const activeBtn = isDiet ? btnDiet : btnTreino;
+            activeBtn.classList.remove('text-slate-500', 'border-transparent');
+            activeBtn.classList.add('text-white', 'border-emerald-500');
+        }
+
+        // Garanta que o fechamento do modal seja fácil no mobile
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) closeModals();
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
+    </script>
+</body>
+
+</html>
